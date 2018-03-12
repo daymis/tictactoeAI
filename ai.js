@@ -5,6 +5,7 @@
 function AI(level) {
   let intelligenceLevel = level,
     game = {};
+  console.log(`DIFFICULTY LEVEL`, intelligenceLevel);
 
   function minimaxValue(state) {
     // The Minimax Algorithm
@@ -67,6 +68,7 @@ function AI(level) {
   };
 
   let makeBlindMove = turn => {
+    console.log(`AI IS MAKING A BLIND MOVE`);
     let available = game.state.emptyCells();
     // console.log(`***Available Cells***`, available);
     // grab a random cell from the available cells
@@ -83,7 +85,8 @@ function AI(level) {
   };
 
   let makeNoviceMove = turn => {
-    console.log(`AI is tryna make a novice move here`);
+    console.log(`AI IS MAKING A NOVICE MOVE`);
+
     let available = game.state.emptyCells();
 
     let availableActions = available.map(cell => {
@@ -95,8 +98,22 @@ function AI(level) {
       return action;
     });
 
-    if (turn === 'X') availableActions.sort(AI.descending);
-    else availableActions.sort(AI.ascending);
+    if (turn === 'X') availableActions.sort((firstAction, secondAction) => {
+      if (firstAction.minimax < secondAction.minimax) return 1;
+      // first action goes before second action
+      else if (firstAction.minimax > secondAction.minimax) return -1;
+      // second action goes before first action
+      else return 0;
+      // tie between both minimax values
+    });
+    else availableActions.sort((firstAction, secondAction) => {
+      if (firstAction.minimax > secondAction.minimax) return 1;
+      // first action goes before second action
+      else if (firstAction.minimax < secondAction.minimax) return -1;
+      // second action goes before first action
+      else return 0;
+      // tie between both minimax values
+    });
 
     console.log(`NOVICE ACTIONS`, availableActions);
 
@@ -115,6 +132,8 @@ function AI(level) {
   };
 
   let makeMasterMove = turn => {
+    console.log(`AI IS MAKING A MASTER MOVE`);
+
     // AI will never lose - it is the perfect player
     // Identify which cells are currently empty on the current state
     let available = game.state.emptyCells();
@@ -125,18 +144,34 @@ function AI(level) {
       // have the AI apply those actions to the current state
 
       action.minimax = minimaxValue(next);
+      console.log(`MASTER ACTION MINIMAX VALS`, action.minimax);
       // find the minimax value of that action and then return action
 
       return action;
     });
 
-    if (turn === 'X') availableActions.sort(AI.ascending);
+    console.log(`MASTER ACTIONS BEFORE SORT`, availableActions);
+    if (turn === 'X') availableActions.sort((firstAction, secondAction) => {
+      if (firstAction.minimax < secondAction.minimax) return 1;
+      // first action goes before second action
+      else if (firstAction.minimax > secondAction.minimax) return -1;
+      // second action goes before first action
+      else return 0;
+      // tie between both minimax values
+    });
     // if it is X's turn, sort available actions by descending minimax values
-    else availableActions.sort(AI.descending);
+    else availableActions.sort((firstAction, secondAction) => {
+      if (firstAction.minimax > secondAction.minimax) return 1;
+      // first action goes before second action
+      else if (firstAction.minimax < secondAction.minimax) return -1;
+      // second action goes before first action
+      else return 0;
+      // tie between both minimax values
+    });
     // otherwise, sort available actions by ascending minimax values
     // we now have an array of moves ordered by optimization depending on whose turn it is
 
-    console.log(`ALL AVAILABLE ACTIONS`, availableActions);
+    console.log(`ALL MASTER ACTIONS AFTER SORT`, availableActions);
 
     let selectedAction = availableActions[0];
     // select the first action because that is the optimal action in the array
@@ -153,10 +188,11 @@ function AI(level) {
 
   this.notify = turn => {
     //notifies the AI that it is its turn to go
+    console.log(`THIS IS THE DIFFICULTY LEVEL`, intelligenceLevel);
     switch (intelligenceLevel) {
-      case 'blind': setTimeout(makeBlindMove(turn), 1000); break;
-      case 'novice': setTimeout(makeNoviceMove(turn), 1000); break;
-      case 'master': setTimeout(makeMasterMove(turn), 1000); break;
+      case 'blind': makeBlindMove(turn); break;
+      case 'novice': makeNoviceMove(turn); break;
+      case 'master': makeMasterMove(turn); break;
     }
   };
 }

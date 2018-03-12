@@ -168,7 +168,6 @@ function Game(aiPlayer) {
   };
 
   this.start = () => {
-    console.log(`starting up the game`);
     // we start the game here, advance the state, and change our game status from starting to running 
     if (this.status === 'starting') {
       this.status = 'running';

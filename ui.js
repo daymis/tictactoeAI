@@ -28,11 +28,11 @@ const difficultyControl = () => {
     control.game.start();
   });
   $(".choice-novice").click(() => {
-    control.chooseDifficulty("novice");
+    control.chooseDifficulty('novice');
     control.game.start();
   });
   $(".choice-master").click(() => {
-    control.chooseDifficulty("master");
+    control.chooseDifficulty('master');
     control.game.start();
   });
 };
@@ -113,14 +113,12 @@ ui.insertAt = (idx, symbol) => {
 // });
 
 const clickHelper = currentId => {
-  console.log(`REGISTERING CLICK`);
   console.log(`GAME OBJ`, control.game)
   if (
     control.game.status === 'running' &&
     control.game.state.turn === 'X' &&
     !$(currentId).hasClass('occupied')
   ) {
-    console.log("inside if statemnt.");
     let idx = +currentId[1];
     let next = new State(control.game.state);
 
