@@ -1,0 +1,67 @@
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+td {
+  border: 2px solid #3fa3c2;
+  height: 100px;
+  width: 100px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 70px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+  display: flex;
+  justify-content: center;
+}
+
+table tr:first-child td {
+  border-top: 0;
+}
+
+table tr:last-child td {
+  border-bottom: 0;
+}
+
+table tr td:first-child {
+  border-left: 0;
+}
+
+table tr td:last-child {
+  border-right: 0;
+}
+
+.control {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.messages {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.endgame {
+  display: none;
+  width: 200px;
+  top: 120px;
+  background-color: rgb(25, 105, 129, 0.8);
+  position: absolute;
+  left: 50%;
+  margin-left: -100px;
+  padding-top: 50px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  font-size: 2em;
+}
+
+button:hover {
+  background-color: #88d9f1;
+}
