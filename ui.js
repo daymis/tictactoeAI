@@ -1,13 +1,9 @@
 let ui = {}, control = {};
 
-let cells = document.querySelectorAll('.cell');
-
 control.chooseDifficulty = difficulty => {
   let ai = new AI(difficulty);
-  console.log(`OUR DIFFICULTY LEVEL: `, difficulty);
 
   control.game = new Game(ai);
-  console.log(`CONTROL.GAME AT UI`, control.game);
   ai.play(control.game);
   ui.switchViewTo('X');
 };
@@ -24,14 +20,36 @@ control.reset = () => {
 
 const difficultyControl = () => {
   $(".choice-blind").click(() => {
+    if (control.game && control.game.status === 'completed') {
+      $(".choice-blind").click(() => {
+        $(".cell").removeClass('occupied');
+        $(".cell").html("");
+        control.reset();
+      });
+    }
+    console.log(`ui's CONTROL GAME`, control.game)
     control.chooseDifficulty('blind');
     control.game.start();
   });
   $(".choice-novice").click(() => {
+    if (control.game && control.game.status === 'completed') {
+      $(".choice-novice").click(() => {
+        $(".cell").removeClass('occupied');
+        $(".cell").html("");
+        control.reset();
+      });
+    }
     control.chooseDifficulty('novice');
     control.game.start();
   });
   $(".choice-master").click(() => {
+    if (control.game && control.game.status === 'completed') {
+      $(".choice-master").click(() => {
+        $(".cell").removeClass('occupied');
+        $(".cell").html("");
+        control.reset();
+      });
+    }
     control.chooseDifficulty('master');
     control.game.start();
   });
@@ -58,21 +76,21 @@ ui.switchViewTo = view => {
       break;
     case 'X won':
       $('.messages').fadeOut(250, () => {
-        $('.messages').html(notifVictory).fadeIn(250).delay(1000).fadeOut(250, () => {
+        $('.messages').html(notifVictory).fadeIn(250).delay(1000).fadeOut(500, () => {
           $('.messages').html('');
         });
       });
       break;
     case 'O won':
       $('.messages').fadeOut(250, () => {
-        $('.messages').html(notifDefeat).fadeIn(250).delay(1000).fadeOut(250, () => {
+        $('.messages').html(notifDefeat).fadeIn(250).delay(1000).fadeOut(500, () => {
           $('.messages').html('');
         });
       });
       break;
     case 'draw':
       $('.messages').fadeOut(250, () => {
-        $('.messages').html(notifDraw).fadeIn(250).delay(1000).fadeOut(250, () => {
+        $('.messages').html(notifDraw).fadeIn(250).delay(1000).fadeOut(500, () => {
           $('.messages').html('');
         });
       });
@@ -88,29 +106,7 @@ ui.insertAt = (idx, symbol) => {
 
   if (!targetCell.hasClass('occupied')) targetCell.html(symbol);
   targetCell.addClass('occupied');
-
-  //.class#ID
-  // $("[data-val='" + idx + "']").text(symbol);
 };
-
-// $(".cell").click(() => {
-//   console.log(`REGISTERING CLICKS`);
-
-//   if (
-//     control.game.status === 'running' &&
-//     control.game.turn === 'X' &&
-//     !$this.hasClass('occupied')
-//   ) {
-//     let idx = +$this.data("id");
-//     let next = new State(control.game.state);
-
-
-//     next.board[idx] = 'X';
-//     ui.insertAt(idx, 'X');
-//     next.advanceTurn();
-//     control.game.advanceTo(next);
-//   }
-// });
 
 const clickHelper = currentId => {
   console.log(`GAME OBJ`, control.game)
@@ -127,8 +123,9 @@ const clickHelper = currentId => {
     next.advanceTurn();
     control.game.advanceTo(next);
   }
-
 }
+
+
 
 $("#0").click(() => clickHelper("#0"));
 $("#1").click(() => clickHelper("#1"));
@@ -142,61 +139,4 @@ $("#8").click(() => clickHelper("#8"));
 
 // $(document).ready(() => {
 //   ui.switchViewTo();
-// });
-
-// ui.insertAt = (idx, symbol) => {
-//   let board = $('.cell'), targetCell = $(board[idx]);
-
-//   if (!targetCell.hasClass('occupied')) {
-//     targetCell.html(symbol);
-//   }
-
-//   targetCell.addClass('occupied');
-// }
-
-// $(".level").each(() => {
-//   let $this = $(this);
-
-//   $this.click(() => {
-//     $('.selected').toggleClass('not-selected');
-//     $('.selected').toggleClass('selected');
-
-//     $this.toggleClass('not-selected');
-//     $this.toggleClass('selected');
-
-//     ai.level = $this.attr('id');
-//     let selectedDifficulty = $('.selected').attr("id");
-
-//     if (selectedDifficulty) {
-//       let aiPlayer = new AI(selectedDifficulty);
-//       global[game] = new Game(aiPlayer);
-
-//       aiPlayer.plays(global.game);
-//       global.game.start();
-//     }
-//   });
-// });
-
-// $(".cell").each(() => {
-//   let $this = $(this);
-
-//   $this.click(() => {
-//     console.log(`This IS the GLOBAL! object`, global);
-//     if (
-//       global.game.status === 'running' &&
-//       global.game.state.turn === 'X' &&
-//       !$this.hasClass('occupied')
-//     ) {
-//       let idx = parseInt($this.data("idx"));
-//       let next = new State(global.game.state);
-
-//       next.board[idx] = 'X';
-
-//       ui.insertAt(idx, 'X');
-
-//       next.advanceTurn();
-
-//       global.game.advanceTo(next);
-//     }
-//   });
 // });
